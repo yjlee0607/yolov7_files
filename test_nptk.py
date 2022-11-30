@@ -57,7 +57,8 @@ def test(data,
         (save_dir / 'labels' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
 
         # Load model
-        model = torch.load(opt.graphmodule_model)['model'].to(device)
+        # model = torch.load(opt.graphmodule_model)['model'].to(device)
+        model = torch.load(opt.graphmodule_model).to(device)
         cfg_model = Model(opt.cfg,ch=3,nc=20).to(device)
         gs = max(int(cfg_model.stride.max()), 32)  # grid size (max stride)
         imgsz = check_img_size(imgsz, s=gs)  # check img_size
@@ -313,7 +314,7 @@ if __name__ == '__main__':
     parser.add_argument('--no-trace', action='store_true', help='don`t trace model')
     parser.add_argument('--v5-metric', action='store_true', help='assume maximum recall as 1.0 in AP calculation')
     parser.add_argument('--graphmodule_model', default=None)
-    parser.add_argument('--cfg',default="yolov7/cfg/training/yolov7-voc.yaml")
+    parser.add_argument('--cfg',default="cfg/training/yolov7-voc.yaml")
     opt = parser.parse_args()
     opt.save_json |= opt.data.endswith('coco.yaml')
     opt.data = check_file(opt.data)  # check file
