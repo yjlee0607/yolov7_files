@@ -26,7 +26,7 @@ def convert_label(path, lb_path, year, image_id):
             out_file.write(" ".join([str(a) for a in (cls_id, *bb)]) + '\n')
 
             
-dir = path = pathlib.Path('VOC/VOCdevkit')
+dir = path = pathlib.Path('VOC')
 for year, image_set in ('2012', 'train'), ('2012', 'val'), ('2007', 'train'), ('2007', 'val'), ('2007', 'test'):
     imgs_path = dir / 'images' / f'{image_set}{year}'
     lbs_path = dir / 'labels' / f'{image_set}{year}'
