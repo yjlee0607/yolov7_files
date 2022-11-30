@@ -1,8 +1,10 @@
+import argparse
+from typing import *
+import copy
+
 import torch
 import torch.nn as nn
-from typing import *
 import torch.fx as fx
-import copy
 
 def find_node(model, name):
     for idx, node in enumerate(list(model.graph.nodes)):
@@ -175,5 +177,16 @@ def fusing_yolov7(model):
     print("Recompile...")
     fused_model.graph.lint()
     fused_model.recompile()
-
+    print("Success")
     return fused_model
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model', type=str, default='yolo7-voc-finetuned.pt', help='finetuned-yolov7 graphmodule path')
+    parser.add_argument('--save_model_path', type=str, default='yolo7-voc-finetuned.pt', help='finetuned-yolov7 graphmodule path')
+    args = parser.parse_args()
+    
+    model = torch.load(args.model,map_location='cpu')
+    fused_model = fusing_yolov7(model)
+    
+    torch.save(fused_model,args.save_model_path)
